@@ -3,4 +3,4 @@
 Расписание студента
 
 
-![](https://i.postimg.cc/Vv5cyH2q/2147483648-210479.png)
+![](https://i.postimg.cc/s2SYmjXS/2147483648-210479.png)
