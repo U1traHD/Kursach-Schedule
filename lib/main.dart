@@ -16,7 +16,11 @@ void main() async {
   } else {
     initialScreen = StartScreen(null);
   }
-  runApp(MaterialApp(home: initialScreen));
+  runApp(MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      home: initialScreen));
 }
 
 class Main extends StatefulWidget {
