@@ -14,7 +14,7 @@ void main() async {
   if (group != null) {
     initialScreen = Main(group);
   } else {
-    initialScreen = StartScreen(null);
+    initialScreen = StartScreen();
   }
   runApp(MaterialApp(
       theme: ThemeData.light(),
@@ -27,14 +27,14 @@ class Main extends StatefulWidget {
   final String? group;
   const Main(this.group);
 
+
   @override
   _MainState createState() => _MainState();
 }
 
 class _MainState extends State<Main> {
   ThemeMode _themeMode = ThemeMode.system;
-  final dbManager = DatabaseManager();
-
+  final DatabaseHelper db = DatabaseHelper();
   @override
   void initState() {
     super.initState();
@@ -86,31 +86,32 @@ class _MainState extends State<Main> {
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
-              FutureBuilder<List<Map>>(
-                future: dbManager.loadDatabase(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Ошибка: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    if (snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Нет данных'));
-                    } else {
+              Scaffold(
+                  body: FutureBuilder<List<Map<String, dynamic>>>(
+                    future: db.loadData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
                       return ListView.builder(
-                        itemCount: snapshot.data!.length,
+                        itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(snapshot.data![index]['id_weekday'] ?? 'Нет данных'),
-                            subtitle: Text('Урок: ${snapshot.data![index]['lesson_id']?.toString() ?? 'Нет данных'}'),
-                          );
+                          var item = snapshot.data?[index];
+                          if (item != null){
+                            return ListTile(
+                              title: Text(item['title'] ?? ''),
+                              subtitle: Text(item['subtitle'] ?? ''),
+                            );
+                          }
+                          else{
+                            return SizedBox.shrink();
+                          }
                         },
                       );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
                     }
-                  } else {
-                    return const Center(child: Text('Неизвестная ошибка'));
-                  }
-                },
+                    return CircularProgressIndicator();
+                  },
+                )
               ),
               Center(
                 child: Column(
@@ -154,3 +155,40 @@ class _MainState extends State<Main> {
     );
   }
 }
+
+// class DataBaseScreen extends StatelessWidget {
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//           body: FutureBuilder<List<Map<String, dynamic>>>(
+//             future: db.loadData(),
+//             builder: (context, snapshot) {
+//               if (snapshot.hasData && snapshot.data != null) {
+//                 return ListView.builder(
+//                   itemCount: snapshot.data?.length ?? 0,
+//                   itemBuilder: (context, index) {
+//                     var item = snapshot.data?[index];
+//                     if (item != null){
+//                       return ListTile(
+//                         title: Text(item['title'] ?? ''),
+//                         subtitle: Text(item['subtitle'] ?? ''),
+//                       );
+//                     }
+//                     else{
+//                       return SizedBox.shrink();
+//                     }
+//                   },
+//                 );
+//               } else if (snapshot.hasError) {
+//                 return Text("${snapshot.error}");
+//               }
+//               return CircularProgressIndicator();
+//             },
+//           )
+//       ),
+//     );
+//   }
+// }

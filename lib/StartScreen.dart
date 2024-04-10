@@ -5,12 +5,6 @@ import 'package:shulestudent/main.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 class StartScreen extends StatefulWidget {
-  final String? group;
-  late DatabaseManager dbManager;
-
-  StartScreen(this.group) {
-    dbManager = DatabaseManager();
-  }
 
   @override
   _StartScreenState createState() => _StartScreenState();
@@ -56,52 +50,14 @@ class _StartScreenState extends State<StartScreen> {
               DropdownButton<String>(
                 value: _selectedGroup,
                 items: <String>[
-                  'АТ 21-11',
-                  'АТ 22-11',
-                  'АТ 23-11',
-                  'ДО 21-11-1',
-                  'ДО 21-11-2',
-                  'ДО 22-11-1',
-                  'ДО 22-11-2',
-                  'ДО 23-11-1',
-                  'ДО 23-11-2',
-                  'ДО 23-11-3',
-                  'ИБАС 21-11',
-                  'ИБАС 22-11',
-                  'ИБАС 23-11-1',
-                  'ИБАС 23-11-2',
-                  'ИСПИ 21-11-1',
-                  'ИСПИ 21-11-2',
-                  'ИСПИ 21-11-3',
-                  'ИСПИ 22-11-1',
-                  'ИСПИ 22-11-2',
-                  'ИСПИ 22-11-3',
-                  'ИСПИ 23-11-1',
-                  'ИСПИ 23-11-2',
-                  'КП 21-11-1',
-                  'КП 21-11-2',
-                  'КП 21-11-3',
-                  'КП 22-11-1',
-                  'КП 22-11-2',
-                  'КП 22-11-3',
-                  'КП 22-11-4',
-                  'КП 23-11-1',
-                  'КП 23-11-2',
-                  'КП 23-11-3',
-                  'КП 23-11-4',
-                  'ОСАТПиП 21-11',
-                  'ОСАТПиП 22-11',
-                  'ОСАТПиП 23-11-1',
-                  'ОСАТПиП 23-11-2',
-                  'ПДО ТТ 21-11',
-                  'ПДО ТТ 22-11',
-                  'ПДО ТТ 23-11',
-                  'ССА 21-11-1',
-                  'ССА 21-11-2',
-                  'ССА 21-11-3',
-                  'ССА 22-11-1',
-                  'ССА 22-11-2',
-                  'ССА 23-11',
+                  'ИСИП 21-11-1',
+                  'ИСИП 21-11-2',
+                  'ИСИП 21-11-3',
+                  'ИСИП 22-11-1',
+                  'ИСИП 22-11-2',
+                  'ИСИП 22-11-3',
+                  'ИСИП 23-11-1',
+                  'ИСИП 23-11-2',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -118,8 +74,6 @@ class _StartScreenState extends State<StartScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_selectedGroup != null) {
-                    widget.dbManager.tableName = _selectedGroup!;
-                    await widget.dbManager.loadDatabase();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -143,4 +97,4 @@ class _StartScreenState extends State<StartScreen> {
   }
 }
 
-void main() => runApp(MaterialApp(home: StartScreen(null)));
+void main() => runApp(MaterialApp(home: StartScreen()));
